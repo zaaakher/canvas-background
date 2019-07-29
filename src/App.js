@@ -8,6 +8,7 @@ class App extends Component {
     super(props);
     this.state = { key: new Date(), width: 0, height: 0 };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   updateWindowDimensions() {
@@ -27,10 +28,15 @@ class App extends Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
-
+  handleRefresh() {
+    this.setState({ key: new Date() });
+  }
   render() {
     return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div
+        style={{ display: "flex", justifyContent: "center" }}
+        onClick={this.handleRefresh}
+      >
         <BackgroundCanvas
           key={this.state.key}
           width={this.state.width}

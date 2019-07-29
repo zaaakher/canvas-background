@@ -15,7 +15,9 @@ class BackgroundCanvas extends React.Component {
         columns: this.props.width / div,
         rows: this.props.height / div,
         color: "black",
-        size: getRandomInt(2, 10),
+        size: 10,
+
+        // size: getRandomInt(2, 10),
         strokeSize: 2
       }
     };
