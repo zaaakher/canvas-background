@@ -11,13 +11,24 @@ class BackgroundCanvas extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      key: new Date(),
       properties: {
         columns: this.props.width / 40,
         rows: this.props.height / 40,
         color: "black",
-        size:8
+        size: 9,
+        strokeSize: 2
       }
     };
+  }
+  handleRefresh() {
+    this.setState({
+      key: new Date(),
+      properties: {
+        ...this.state.properties,
+        size: getRandomInt(2, 10)
+      }
+    });
   }
   componentDidMount() {
     paper.setup(this.canvas);
@@ -56,7 +67,7 @@ class BackgroundCanvas extends React.Component {
       if (n <= 3) {
         gr.rotate(45);
         gr.onFrame = function() {
-          this.rotate(1);
+          this.rotate(0.3);
         };
       }
       gr.scale(remapNumbers(props.size, [0.1, 20], [0.1, 2]));
@@ -149,8 +160,8 @@ class BackgroundCanvas extends React.Component {
   render() {
     return (
       <canvas
+        onClick={() => this.handleRefresh()}
         ref={ref => (this.canvas = ref)}
-        // style={{ backgroundColor: "red" }}
         width={this.props.width}
         height={this.props.height}
       />
