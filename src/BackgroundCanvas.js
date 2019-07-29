@@ -1,57 +1,38 @@
 import React from "react";
 import paper from "paper";
-import {
-  getRandomInt,
-  //   getRandomElement,
-  //   getRandomArbitrary,
-  makeGrid,
-  remapNumbers
-} from "./util";
+
+import { getRandomInt, makeGrid, remapNumbers } from "./util";
+
+let div = getRandomInt(20, 30);
+
 class BackgroundCanvas extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       key: new Date(),
       properties: {
-        columns: this.props.width / 40,
-        rows: this.props.height / 40,
+        columns: this.props.width / div,
+        rows: this.props.height / div,
         color: "black",
-        size: 9,
+        size: getRandomInt(2, 10),
         strokeSize: 2
       }
     };
   }
-  handleRefresh(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    this.setState({
-      key: new Date(),
-      properties: {
-        ...this.state.properties,
-        size: getRandomInt(2, 10)
-      }
-    });
-  }
   componentDidMount() {
     paper.setup(this.canvas);
     paper.project.clear();
-    // this.drawing(this.props);
     this.plusSigns(this.state.properties);
-
-    // patterns[this.state.properties.pattern](this.state.properties);
-    // paper.project.view.scale(0.8);
   }
   componentDidUpdate() {
     paper.setup(this.canvas);
     paper.project.clear();
-    // patterns[this.state.properties.pattern](this.state.properties);
-    // this.drawing(this.props);
     this.plusSigns(this.state.properties);
-    // paper.project.view.scale(0.8);
   }
 
   plusSigns(props) {
     let gridGroup = makeGrid(props.columns, props.rows);
+    gridGroup.view.center.set(paper.project.view.center);
     gridGroup.children.map((cell, i) => {
       let ln = new paper.Path.Line(
         cell.bounds.topLeft,
@@ -162,8 +143,6 @@ class BackgroundCanvas extends React.Component {
   render() {
     return (
       <canvas
-        onClick={e => this.handleRefresh(e)}
-        on
         ref={ref => (this.canvas = ref)}
         width={this.props.width}
         height={this.props.height}
