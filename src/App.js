@@ -30,7 +30,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <BackgroundCanvas
           key={this.state.key}
           width={this.state.width}

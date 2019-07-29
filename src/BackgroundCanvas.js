@@ -3,7 +3,8 @@ import paper from "paper";
 
 import { getRandomInt, makeGrid, remapNumbers } from "./util";
 
-let div = getRandomInt(20, 30);
+let div = getRandomInt(20, 50);
+// let div = 40;
 
 class BackgroundCanvas extends React.Component {
   constructor(props) {
@@ -50,10 +51,12 @@ class BackgroundCanvas extends React.Component {
       if (n <= 3) {
         gr.rotate(45);
         gr.onFrame = function() {
-          this.rotate(0.3);
+        //   this.rotate(0.3);
+          this.rotate(1);
         };
       }
       gr.scale(remapNumbers(props.size, [0.1, 20], [0.1, 2]));
+    //   gr.opacity = 0.2;
       return cell;
     });
     gridGroup.remove();
@@ -143,6 +146,7 @@ class BackgroundCanvas extends React.Component {
   render() {
     return (
       <canvas
+        id="myCanvas"
         ref={ref => (this.canvas = ref)}
         width={this.props.width}
         height={this.props.height}
