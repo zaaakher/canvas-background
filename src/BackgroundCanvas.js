@@ -21,13 +21,15 @@ class BackgroundCanvas extends React.Component {
       }
     };
   }
-  handleRefresh() {
+  handleRefresh(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.setState({
-      key: new Date()
-    //   properties: {
-    //     ...this.state.properties,
-    //     size: getRandomInt(2, 10)
-    //   }
+      key: new Date(),
+      properties: {
+        ...this.state.properties,
+        size: getRandomInt(2, 10)
+      }
     });
   }
   componentDidMount() {
@@ -160,7 +162,8 @@ class BackgroundCanvas extends React.Component {
   render() {
     return (
       <canvas
-        onClick={() => this.handleRefresh()}
+        onClick={e => this.handleRefresh(e)}
+        on
         ref={ref => (this.canvas = ref)}
         width={this.props.width}
         height={this.props.height}
