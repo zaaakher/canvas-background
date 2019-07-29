@@ -23,11 +23,11 @@ class BackgroundCanvas extends React.Component {
   }
   handleRefresh() {
     this.setState({
-      key: new Date(),
-      properties: {
-        ...this.state.properties,
-        size: getRandomInt(2, 10)
-      }
+      key: new Date()
+    //   properties: {
+    //     ...this.state.properties,
+    //     size: getRandomInt(2, 10)
+    //   }
     });
   }
   componentDidMount() {
