@@ -2,7 +2,7 @@ import React from "react";
 import paper from "paper";
 
 import { getRandomInt, makeGrid, remapNumbers } from "./util";
-
+import movingStars from "./movingStars";
 let div = getRandomInt(20, 50);
 // let div = 40;
 
@@ -12,20 +12,26 @@ class BackgroundCanvas extends React.Component {
     this.state = {
       key: new Date(),
       properties: {
-        columns: this.props.width / div,
-        rows: this.props.height / div,
+        // columns: this.props.width / div,
+        // rows: this.props.height / div,
+        columns: 5,
+        rows: 5,
         color: "black",
         size: 10,
 
         // size: getRandomInt(2, 10),
-        strokeSize: 2
-      }
+        strokeSize: 2,
+      },
     };
   }
   componentDidMount() {
     paper.setup(this.canvas);
     paper.project.clear();
     this.plusSigns(this.state.properties);
+    let t = paper.project.activeLayer.children;
+    // t.strokeColor = 'red';
+    // t.strokeWidth = 10
+    console.log(t);
   }
   componentDidUpdate() {
     paper.setup(this.canvas);
@@ -33,9 +39,13 @@ class BackgroundCanvas extends React.Component {
     this.plusSigns(this.state.properties);
   }
 
+  updateCanva(k) {
+    this.setState({ key: new Date() });
+  }
   plusSigns(props) {
     let gridGroup = makeGrid(props.columns, props.rows);
     gridGroup.view.center.set(paper.project.view.center);
+    // let n = getRandomInt(0, 5);
     gridGroup.children.map((cell, i) => {
       let ln = new paper.Path.Line(
         cell.bounds.topLeft,
@@ -50,15 +60,34 @@ class BackgroundCanvas extends React.Component {
       gr.strokeCap = "round";
       gr.strokeWidth = props.strokeSize;
       let n = getRandomInt(0, 5);
+      // console.log("rotation " + gr.rotation);
+      // console.log("n = ", n);
+      let rot = 0;
       if (n <= 3) {
-        gr.rotate(45);
-        gr.onFrame = function() {
-        //   this.rotate(0.3);
-          this.rotate(1);
+        gr.onFrame = function (e) {
+          this.rotation++;
+          rot++;
+          if (rot == 90) {
+            rot = 0;
+            console.log("full cycle");
+            // return;
+          }
         };
+        // updateCanv();
+        // that.setState({ key: new Date() });
       }
-      gr.scale(remapNumbers(props.size, [0.1, 20], [0.1, 2]));
-    //   gr.opacity = 0.2;
+
+      // console.log()
+      // if (gr.rotation == 360 || gr.rotation == 0) {
+      //   n = getRandomInt(0, 5);
+      //     gr.onFrame = function () {
+      //       // gr.rotate(45);
+      //       this.rotate(2);
+      //       // n = getRandom Int(0, 5);
+      //     };
+      //   }
+      // gr.scale(remapNumbers(props.size, [0.1, 20], [0.1, 2]));
+      //   gr.opacity = 0.2;
       return cell;
     });
     gridGroup.remove();
@@ -77,7 +106,7 @@ class BackgroundCanvas extends React.Component {
       center: [0, 0],
       radius: 5,
       fillColor: "white",
-      strokeColor: "#14283A"
+      strokeColor: "#14283A",
     });
 
     var symbol = new paper.Symbol(cir);
@@ -95,28 +124,28 @@ class BackgroundCanvas extends React.Component {
       placed.scale(i / count + 0.001);
       placed.data.vector = new paper.Point({
         angle: Math.random() * 360,
-        length: ((i / count) * Math.random()) / 5
+        length: ((i / count) * Math.random()) / 5,
       });
       startsGroup.addChild(placed);
     }
 
     var vector = new paper.Point({
       angle: 45,
-      length: 0
+      length: 0,
     });
 
     var mouseVector = vector.clone();
 
-    paper.view.onMouseMove = function(event) {
+    paper.view.onMouseMove = function (event) {
       mouseVector = paper.view.center - event.point;
       return false; // Prevent touch scrolling
     };
 
     let stars = paper.project.activeLayer.children[1].children;
     // let speed = Math.random();
-    paper.view.onFrame = function(event) {
+    paper.view.onFrame = function (event) {
       vector = vector + (mouseVector - vector) / 30;
-      stars.map(function(item, k) {
+      stars.map(function (item, k) {
         if (k % 2 === 0) {
           item.position.x += 0.3;
         } else {
@@ -147,12 +176,14 @@ class BackgroundCanvas extends React.Component {
   }
   render() {
     return (
-      <canvas
-        id="myCanvas"
-        ref={ref => (this.canvas = ref)}
-        width={this.props.width}
-        height={this.props.height}
-      />
+      <div key={this.state.key} onClick={this.handleRefresh}>
+        <canvas
+          id="myCanvas"
+          ref={(ref) => (this.canvas = ref)}
+          width={this.props.width}
+          height={this.props.height}
+        />
+      </div>
     );
   }
 }
