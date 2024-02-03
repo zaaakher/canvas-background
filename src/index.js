@@ -7,7 +7,18 @@ import PaperCanvas from "./components/PaperCanvas";
 
 const Falak = () => (
   <div>
-    <App />
+    <div
+      style={{
+        width: "100%",
+        height: "100dvh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "white",
+      }}
+    >
+      This canvas is full bg
+    </div>
     <PaperCanvas />
   </div>
 );

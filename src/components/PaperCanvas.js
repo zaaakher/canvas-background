@@ -23,8 +23,9 @@ class PaperCanvas extends React.Component {
           ref={(ref) => {
             this.canvas = ref;
           }}
-          width={window.innerWidth}
-          height={window.innerHeight}
+          style={{ width: "100%", height: "100vh" }}
+          // width={window.innerWidth}
+          // height={window.innerHeight}
           className="canvas-container"
         />
       </div>
